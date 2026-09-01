@@ -25,3 +25,28 @@ func (sucursal *SucursalAlmacenamiento) ValidarTarjeta(tajeta entidad.Tarjeta) (
 
 	return true, nil
 }
+
+func NuevoSucursalAlmacenamiento() *SucursalAlmacenamiento {
+	sucursal := &SucursalAlmacenamiento{
+		Tarjetas: make(map[string]entidad.Tarjeta),
+	}
+
+	sucursal.seedTarjetas()
+
+	return sucursal
+}
+
+func (sucursal *SucursalAlmacenamiento) seedTarjetas() {
+
+	tarjetaValida := entidad.Tarjeta{
+		Numero:      "123456",
+		Vencimiento: time.Now().AddDate(1, 0, 0),
+	}
+	tarjetaVencida := entidad.Tarjeta{
+		Numero:      "999999",
+		Vencimiento: time.Now().AddDate(0, 0, -1),
+	}
+
+	sucursal.Tarjetas[tarjetaValida.Numero] = tarjetaValida
+	sucursal.Tarjetas[tarjetaVencida.Numero] = tarjetaVencida
+}

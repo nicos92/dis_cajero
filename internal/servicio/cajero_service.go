@@ -14,7 +14,7 @@ type CajeroService struct {
 }
 
 func (cajeroService *CajeroService) AuntenticarUsuario(tarjeta entidad.Tarjeta, cuenta entidad.Cuenta) (entidad.Sesion, error) {
-	validacionTarjeta, err := cajeroService.ClienteSucursal.ValidarTajeta(tarjeta)
+	validacionTarjeta, err := cajeroService.ClienteSucursal.ValidarTarjeta(tarjeta)
 	sesion := new(entidad.Sesion)
 	sesion.Activa = false
 	if err != nil {
