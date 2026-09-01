@@ -3,19 +3,19 @@ package service
 import (
 	"errors"
 
-	"github.com/nicos92/dis_cajero/internal/domain/entity"
-	"github.com/nicos92/dis_cajero/internal/service/ports"
+	entidad "github.com/nicos92/dis_cajero/internal/dominio/entidad"
+	"github.com/nicos92/dis_cajero/internal/servicio/ports"
 )
 
 type CajeroService struct {
 	ClienteRedCentral ports.ClienteRedCentral
 	ClienteSucursal   ports.ClienteSucursal
-	Sesion            entity.Sesion
+	Sesion            entidad.Sesion
 }
 
-func (cajeroService *CajeroService) AuntenticarUsuario(tarjeta entity.Tarjeta, cuenta entity.Cuenta) (entity.Sesion, error) {
+func (cajeroService *CajeroService) AuntenticarUsuario(tarjeta entidad.Tarjeta, cuenta entidad.Cuenta) (entidad.Sesion, error) {
 	validacionTarjeta, err := cajeroService.ClienteSucursal.ValidarTajeta(tarjeta)
-	sesion := new(entity.Sesion)
+	sesion := new(entidad.Sesion)
 	sesion.Activa = false
 	if err != nil {
 		return *sesion, err
@@ -38,32 +38,32 @@ func (cajeroService *CajeroService) AuntenticarUsuario(tarjeta entity.Tarjeta, c
 
 }
 
-func (cajeroService *CajeroService) ConsultarSaldo() (float64, entity.EstadoTransaccion, error) {
+func (cajeroService *CajeroService) ConsultarSaldo() (float64, entidad.EstadoTransaccion, error) {
 	validarSesion := cajeroService.Sesion.Activa
 
 	if !validarSesion {
-		return 0, entity.EstadoCancelado, errors.New("La cuenta sesion no esta activa")
+		return 0, entidad.EstadoCancelado, errors.New("La cuenta sesion no esta activa")
 	}
 
 	saldo, err := cajeroService.ClienteRedCentral.ConsultarSaldo(cajeroService.Sesion.CuentaCliente)
 
 	if err != nil {
-		return 0, entity.EstadoCancelado, err
+		return 0, entidad.EstadoCancelado, err
 	}
 
-	return saldo, entity.EstadoConfirmado, nil
+	return saldo, entidad.EstadoConfirmado, nil
 }
 
-func (cajeroService *CajeroService) ExtraerEfectivo(monto float64) (entity.EstadoTransaccion, int, error) {
+func (cajeroService *CajeroService) ExtraerEfectivo(monto float64) (entidad.EstadoTransaccion, int, error) {
 
 	validarSesion := cajeroService.Sesion.Activa
 
 	if !validarSesion {
-		return entity.EstadoCancelado, 0, errors.New("La cuenta sesion no esta activa")
+		return entidad.EstadoCancelado, 0, errors.New("La cuenta sesion no esta activa")
 	}
 
 	if cajeroService.Sesion.CuentaCliente.Saldo < monto {
-		return entity.EstadoCancelado, 0, errors.New("Saldo insuficiente en la cuenta.")
+		return entidad.EstadoCancelado, 0, errors.New("Saldo insuficiente en la cuenta.")
 	}
 	estado, id, err := cajeroService.ClienteRedCentral.DebitarExtaccion(cajeroService.Sesion.CuentaCliente, monto)
 
@@ -76,15 +76,15 @@ func (cajeroService *CajeroService) ExtraerEfectivo(monto float64) (entity.Estad
 	return estado, id, nil
 }
 
-func (cajeroService *CajeroService) RealizarTransferencia(cuentaDestino entity.Cuenta, monto float64) (entity.EstadoTransaccion, int, error) {
+func (cajeroService *CajeroService) RealizarTransferencia(cuentaDestino entidad.Cuenta, monto float64) (entidad.EstadoTransaccion, int, error) {
 	validarSesion := cajeroService.Sesion.Activa
 
 	if !validarSesion {
-		return entity.EstadoCancelado, 0, errors.New("La cuenta sesion no esta activa")
+		return entidad.EstadoCancelado, 0, errors.New("La cuenta sesion no esta activa")
 	}
 
 	if cajeroService.Sesion.CuentaCliente.Saldo < monto {
-		return entity.EstadoCancelado, 0, errors.New("Saldo insuficiente en la cuenta.")
+		return entidad.EstadoCancelado, 0, errors.New("Saldo insuficiente en la cuenta.")
 	}
 
 	estado, id, err := cajeroService.ClienteRedCentral.TransferirACuenta(cajeroService.Sesion.CuentaCliente, cuentaDestino, monto)

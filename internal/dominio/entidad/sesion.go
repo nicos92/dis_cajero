@@ -1,4 +1,4 @@
-package entity
+package entidad
 
 type Sesion struct {
 	CuentaCliente Cuenta

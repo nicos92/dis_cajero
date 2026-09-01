@@ -1,4 +1,4 @@
-package entity
+package entidad
 
 type Sucursal struct {
 	Numero           string

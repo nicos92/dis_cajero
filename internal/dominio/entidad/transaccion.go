@@ -1,4 +1,4 @@
-package entity
+package entidad
 
 import "time"
 
@@ -8,7 +8,7 @@ type Transaccion struct {
 	CuentaOrigen  Cuenta
 	CuentaDestino Cuenta
 	Monto         float64
-	CreatedAt     time.Time
+	Creado        time.Time
 	Estado        EstadoTransaccion
 }
 
