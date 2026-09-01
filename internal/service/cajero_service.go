@@ -38,18 +38,37 @@ func (cajeroService *CajeroService) AuntenticarUsuario(tarjeta entity.Tarjeta, c
 
 }
 
-func (cajeroService *CajeroService) ConsultarSaldo() (float64, error) {
+func (cajeroService *CajeroService) ConsultarSaldo() (float64, entity.EstadoTransaccion, error) {
 	validarSesion := cajeroService.Sesion.Activa
 
 	if !validarSesion {
-		return 0, errors.New("La cuenta sesion no esta activa")
+		return 0, entity.EstadoCancelado, errors.New("La cuenta sesion no esta activa")
 	}
 
 	saldo, err := cajeroService.ClienteRedCentral.ConsultarSaldo(cajeroService.Sesion.CuentaCliente)
 
 	if err != nil {
-		return 0, err
+		return 0, entity.EstadoCancelado, err
 	}
 
-	return saldo, nil
+	return saldo, entity.EstadoConfirmado, nil
+}
+
+func (cajeroService *CajeroService) ExtraerEfectivo(monto float64) (entity.EstadoTransaccion, int, error) {
+
+	validarSesion := cajeroService.Sesion.Activa
+
+	if !validarSesion {
+		return entity.EstadoCancelado, 0, errors.New("La cuenta sesion no esta activa")
+	}
+
+	estado, id, err := cajeroService.ClienteRedCentral.DebitarExtaccion(cajeroService.Sesion.CuentaCliente, monto)
+
+	if err != nil {
+		return estado, id, err
+	}
+
+	cajeroService.Sesion.CuentaCliente.Saldo -= monto
+
+	return estado, id, nil
 }
