@@ -1,6 +1,8 @@
 package service
 
 import (
+	"errors"
+
 	"github.com/nicos92/dis_cajero/internal/domain/entity"
 	"github.com/nicos92/dis_cajero/internal/service/ports"
 )
@@ -34,4 +36,20 @@ func (cajeroService *CajeroService) AuntenticarUsuario(tarjeta entity.Tarjeta, c
 	cajeroService.Sesion = *sesion
 	return *sesion, nil
 
+}
+
+func (cajeroService *CajeroService) ConsultarSaldo() (float64, error) {
+	validarSesion := cajeroService.Sesion.Activa
+
+	if !validarSesion {
+		return 0, errors.New("La cuenta sesion no esta activa")
+	}
+
+	saldo, err := cajeroService.ClienteRedCentral.ConsultarSaldo(cajeroService.Sesion.CuentaCliente)
+
+	if err != nil {
+		return 0, err
+	}
+
+	return saldo, nil
 }
