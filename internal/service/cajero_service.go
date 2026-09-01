@@ -97,3 +97,14 @@ func (cajeroService *CajeroService) RealizarTransferencia(cuentaDestino entity.C
 
 	return estado, id, nil
 }
+
+func (cajeroService *CajeroService) CerrarSesion() (bool, error) {
+	validarSesion := cajeroService.Sesion.Activa
+
+	if !validarSesion {
+		return false, errors.New("La cuenta sesion no esta activa")
+	}
+
+	cajeroService.Sesion.Activa = false
+	return cajeroService.Sesion.Activa, nil
+}
