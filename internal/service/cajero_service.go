@@ -75,3 +75,25 @@ func (cajeroService *CajeroService) ExtraerEfectivo(monto float64) (entity.Estad
 
 	return estado, id, nil
 }
+
+func (cajeroService *CajeroService) RealizarTransferencia(cuentaDestino entity.Cuenta, monto float64) (entity.EstadoTransaccion, int, error) {
+	validarSesion := cajeroService.Sesion.Activa
+
+	if !validarSesion {
+		return entity.EstadoCancelado, 0, errors.New("La cuenta sesion no esta activa")
+	}
+
+	if cajeroService.Sesion.CuentaCliente.Saldo < monto {
+		return entity.EstadoCancelado, 0, errors.New("Saldo insuficiente en la cuenta.")
+	}
+
+	estado, id, err := cajeroService.ClienteRedCentral.TransferirACuenta(cajeroService.Sesion.CuentaCliente, cuentaDestino, monto)
+
+	if err != nil {
+		return estado, id, err
+	}
+
+	cajeroService.Sesion.CuentaCliente.Saldo -= monto
+
+	return estado, id, nil
+}
