@@ -62,6 +62,9 @@ func (cajeroService *CajeroService) ExtraerEfectivo(monto float64) (entity.Estad
 		return entity.EstadoCancelado, 0, errors.New("La cuenta sesion no esta activa")
 	}
 
+	if cajeroService.Sesion.CuentaCliente.Saldo < monto {
+		return entity.EstadoCancelado, 0, errors.New("Saldo insuficiente en la cuenta.")
+	}
 	estado, id, err := cajeroService.ClienteRedCentral.DebitarExtaccion(cajeroService.Sesion.CuentaCliente, monto)
 
 	if err != nil {
