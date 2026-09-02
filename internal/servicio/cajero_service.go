@@ -2,6 +2,7 @@ package servicio
 
 import (
 	"errors"
+	"fmt"
 
 	entidad "github.com/nicos92/dis_cajero/internal/dominio/entidad"
 	"github.com/nicos92/dis_cajero/internal/servicio/ports"
@@ -13,7 +14,7 @@ type CajeroService struct {
 	Sesion            entidad.Sesion
 }
 
-func (cajeroService *CajeroService) AuntenticarUsuario(tarjeta entidad.Tarjeta, cuenta entidad.Cuenta) (entidad.Sesion, error) {
+func (cajeroService *CajeroService) AutenticarUsuario(tarjeta entidad.Tarjeta, cuenta entidad.Cuenta) (entidad.Sesion, error) {
 	validacionTarjeta, err := cajeroService.ClienteSucursal.ValidarTarjeta(tarjeta)
 	sesion := new(entidad.Sesion)
 	sesion.Activa = false
@@ -28,7 +29,7 @@ func (cajeroService *CajeroService) AuntenticarUsuario(tarjeta entidad.Tarjeta, 
 	}
 
 	if !validacionTarjeta || !validacionPin {
-		return *sesion, err
+		return entidad.Sesion{}, fmt.Errorf("credenciales inválidas: tarjeta o PIN incorrectos")
 	}
 
 	sesion.Activa = true

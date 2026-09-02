@@ -2,9 +2,11 @@ package presentacion
 
 import (
 	"bufio"
+	"context"
 	"errors"
 	"fmt"
 	"os"
+	"os/signal"
 	"strconv"
 	"strings"
 	"time"
@@ -74,7 +76,7 @@ func (consola *consolaa) menuLogin() (bool, error) {
 	tarjeta := entidad.Tarjeta{Numero: nroTarjeta}
 	cuenta := entidad.Cuenta{Numero: nroCuenta, Pin: nroPin}
 
-	sesion, err := consola.Cajero.AuntenticarUsuario(tarjeta, cuenta)
+	sesion, err := consola.Cajero.AutenticarUsuario(tarjeta, cuenta)
 
 	if err != nil {
 		fmt.Printf("Error de autenticacion: %s\n", err.Error())
@@ -83,7 +85,7 @@ func (consola *consolaa) menuLogin() (bool, error) {
 	}
 	if !sesion.Activa {
 		fmt.Println("La sesión no está activa")
-		return false, err
+		return false, nil
 	}
 	fmt.Println("Inicio de sesión exitoso")
 	time.Sleep(1000 * time.Millisecond)
@@ -180,12 +182,27 @@ func (consola *consolaa) menuOperaciones() (bool, error) {
 }
 
 func (consola *consolaa) Iniciar() {
+	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
+	defer stop()
+
 	for {
-		// helpers.CallClear()
+		select {
+		case <-ctx.Done():
+			fmt.Println("\nSesión terminada.")
+			return
+		default:
+		}
+
 		if !consola.Cajero.Sesion.Activa {
-			consola.menuLogin()
+			if _, err := consola.menuLogin(); err != nil {
+				fmt.Printf("Error: %v\n", err)
+				time.Sleep(1 * time.Second)
+			}
 		} else {
-			consola.menuOperaciones()
+			if _, err := consola.menuOperaciones(); err != nil {
+				fmt.Printf("Error: %v\n", err)
+				time.Sleep(1 * time.Second)
+			}
 		}
 	}
 }
