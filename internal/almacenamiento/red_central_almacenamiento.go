@@ -76,21 +76,31 @@ func (redCentral *RedCentralAlmacenamiento) DebitarExtraccion(cuenta entidad.Cue
 		return entidad.EstadoCancelado, 0, errors.New("La cuenta no existe")
 	}
 
+	if cuentaGuardada.Saldo < monto {
+		return entidad.EstadoCancelado, 0, errors.New("Saldo insuficiente para extraer")
+	}
+
 	cuentaGuardada.Saldo -= monto
 
 	redCentral.Cuentas[cuentaGuardada.Numero] = cuentaGuardada
 
 	id := len(redCentral.Transacciones)
+	redCentral.Transacciones[strconv.Itoa(id)] = id
 
 	return entidad.EstadoConfirmado, id, nil
 }
 
-func (redCentral *RedCentralAlmacenamiento) TransferirCuenta(origen entidad.Cuenta, destino entidad.Cuenta, monto float64) (entidad.EstadoTransaccion, int, error) {
+func (redCentral *RedCentralAlmacenamiento) TransferirACuenta(origen entidad.Cuenta, destino entidad.Cuenta, monto float64) (entidad.EstadoTransaccion, int, error) {
 	cuentaOrigen, existe := redCentral.Cuentas[origen.Numero]
 
 	if !existe {
 		return entidad.EstadoCancelado, 0, errors.New("La cuenta de origen no existe")
 	}
+
+	if cuentaOrigen.Saldo < monto {
+		return entidad.EstadoCancelado, 0, errors.New("Saldo insuficiente para transferir")
+	}
+
 	cuentaDestino, existe := redCentral.Cuentas[destino.Numero]
 
 	if !existe {
@@ -99,10 +109,13 @@ func (redCentral *RedCentralAlmacenamiento) TransferirCuenta(origen entidad.Cuen
 
 	cuentaOrigen.Saldo -= monto
 	cuentaDestino.Saldo += monto
+
 	redCentral.Cuentas[cuentaOrigen.Numero] = cuentaOrigen
 
 	redCentral.Cuentas[cuentaDestino.Numero] = cuentaDestino
+
 	id := len(redCentral.Transacciones)
 	redCentral.Transacciones[strconv.Itoa(id)] = id
+
 	return entidad.EstadoConfirmado, id, nil
 }
