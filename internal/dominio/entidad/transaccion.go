@@ -12,18 +12,18 @@ type Transaccion struct {
 	Estado        EstadoTransaccion
 }
 
-type EstadoTransaccion int
+type EstadoTransaccion string
 
 const (
-	EstadoProceso EstadoTransaccion = iota
-	EstadoCancelado
-	EstadoConfirmado
+	EstadoProceso    EstadoTransaccion = "Procesando"
+	EstadoCancelado  EstadoTransaccion = "Cancelada"
+	EstadoConfirmado EstadoTransaccion = "Confirmada"
 )
 
 type TipoTransaccion string
 
 const (
-	Consulta      = "Consulta"
-	Extraccion    = "Extraccion"
-	Transferencia = "Transferencia"
+	Consulta      TipoTransaccion = "Consulta"
+	Extraccion    TipoTransaccion = "Extraccion"
+	Transferencia TipoTransaccion = "Transferencia"
 )

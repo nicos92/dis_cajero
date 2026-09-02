@@ -36,9 +36,16 @@ func (redCentral *RedCentralAlmacenamiento) seedCuentas() {
 		Saldo:  543.54,
 		Activa: false,
 	}
+	cuentaTres := entidad.Cuenta{
+		Numero: "333",
+		Pin:    "2223332",
+		Saldo:  543.54,
+		Activa: true,
+	}
 
 	redCentral.Cuentas[cuentaUno.Numero] = cuentaUno
 	redCentral.Cuentas[cuentaDos.Numero] = cuentaDos
+	redCentral.Cuentas[cuentaTres.Numero] = cuentaTres
 
 }
 
@@ -85,7 +92,7 @@ func (redCentral *RedCentralAlmacenamiento) DebitarExtraccion(cuenta entidad.Cue
 
 	redCentral.Cuentas[cuentaGuardada.Numero] = cuentaGuardada
 
-	id := len(redCentral.Transacciones)
+	id := len(redCentral.Transacciones) + 1
 	redCentral.Transacciones[strconv.Itoa(id)] = id
 
 	return entidad.EstadoConfirmado, id, nil
@@ -108,6 +115,15 @@ func (redCentral *RedCentralAlmacenamiento) TransferirACuenta(origen entidad.Cue
 		return entidad.EstadoCancelado, 0, errors.New("La cuenta de destino no existe")
 	}
 
+	if !cuentaDestino.Activa {
+		return entidad.EstadoCancelado, 0, errors.New("La cuenta de destino no está activada.")
+
+	}
+
+	if cuentaDestino.Numero == cuentaOrigen.Numero {
+		return entidad.EstadoCancelado, 0, errors.New("La cuenta de destino no puede ser su misma cuenta")
+
+	}
 	cuentaOrigen.Saldo -= monto
 	cuentaDestino.Saldo += monto
 
@@ -115,7 +131,7 @@ func (redCentral *RedCentralAlmacenamiento) TransferirACuenta(origen entidad.Cue
 
 	redCentral.Cuentas[cuentaDestino.Numero] = cuentaDestino
 
-	id := len(redCentral.Transacciones)
+	id := len(redCentral.Transacciones) + 1
 	redCentral.Transacciones[strconv.Itoa(id)] = id
 
 	return entidad.EstadoConfirmado, id, nil

@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/nicos92/dis_cajero/internal/dominio/entidad"
+	"github.com/nicos92/dis_cajero/internal/presentacion/inputs"
 	"github.com/nicos92/dis_cajero/internal/servicio"
 )
 
@@ -54,6 +55,7 @@ func (consola *consolaa) leerTexto(mensaje string) (string, error) {
 }
 
 func (consola *consolaa) menuLogin() (bool, error) {
+	inputs.CallClear()
 	fmt.Println(Green + Bold + "Bienvenido al Banco Central")
 	nroTarjeta, err := consola.leerTexto(Reset + "Ingrese el número de la tarjeta: ")
 
@@ -79,29 +81,28 @@ func (consola *consolaa) menuLogin() (bool, error) {
 	sesion, err := consola.Cajero.AutenticarUsuario(tarjeta, cuenta)
 
 	if err != nil {
-		fmt.Printf("Error de autenticacion: %s\n", err.Error())
-		time.Sleep(1000 * time.Millisecond)
 		return false, err
 	}
 	if !sesion.Activa {
 		fmt.Println("La sesión no está activa")
 		return false, nil
 	}
-	fmt.Println("Inicio de sesión exitoso")
+	fmt.Println(Green + "Inicio de sesión exitoso" + Reset)
 	time.Sleep(1000 * time.Millisecond)
+	inputs.CallClear()
 
 	return true, nil
 }
 
 func (consola *consolaa) menuOperaciones() (bool, error) {
-	fmt.Printf("Bienvenido\nIngresaste con la cuenta %s\n", consola.Cajero.Sesion.CuentaCliente.Numero)
-	fmt.Println("\n--- Menú Principal ---")
+	fmt.Printf("%sBienvenido\nIngresaste con la cuenta %s%s\n", Green, consola.Cajero.Sesion.CuentaCliente.Numero, Reset)
+	fmt.Println(Bold + Yellow + "\nMenú Principal" + Reset)
 	fmt.Println("1. Consultar Saldo")
 	fmt.Println("2. Extraer Efectivo")
 	fmt.Println("3. Transferir Dinero")
 	fmt.Println("4. Salir / Cerrar Sesión")
 
-	opcion, err := consola.leerTexto("Ingrese una opción")
+	opcion, err := consola.leerTexto("Ingrese una opción: ")
 
 	if err != nil {
 		return false, err
@@ -115,25 +116,22 @@ func (consola *consolaa) menuOperaciones() (bool, error) {
 				fmt.Printf("Error al consultar el saldo: %s\n", err.Error())
 				return false, err
 			}
-			fmt.Printf("Consulta: %v\nSu saldo es: %v$\n", estado, saldo)
+			fmt.Printf("%sConsulta número: %v\nSu saldo es: %v$\n%s", Green, estado, saldo, Reset)
 
 		}
 	case "2":
 		{
-			monto, err := consola.leerTexto("Ingrese el monto que sea retirar")
+			monto, err := consola.leerTexto("Ingrese el monto que sea retirar: ")
 			if err != nil {
-				fmt.Printf("Fallo: %s\n", err.Error())
 				return false, err
 			}
 			nuevoMonto, err := strconv.ParseFloat(monto, 64)
 			if err != nil {
-				fmt.Printf("Fallo al convertir a número: %s\n", err.Error())
-				return false, err
+				return false, errors.New("error al ingresar el monto. ")
 
 			}
 			estado, id, err := consola.Cajero.ExtraerEfectivo(nuevoMonto)
 			if err != nil {
-				fmt.Printf("Fallo: %s\n", err.Error())
 				return false, err
 
 			}
@@ -143,7 +141,7 @@ func (consola *consolaa) menuOperaciones() (bool, error) {
 		}
 	case "3":
 		{
-			monto, err := consola.leerTexto("Ingrese el monto que sea transferir")
+			monto, err := consola.leerTexto("Ingrese el monto que sea transferir: ")
 			if err != nil {
 				fmt.Printf("Fallo: %s\n", err.Error())
 				return false, err
@@ -155,7 +153,7 @@ func (consola *consolaa) menuOperaciones() (bool, error) {
 
 			}
 
-			nroCuentaDestino, err := consola.leerTexto("Ingrese el número de cuenta al que desea transferir")
+			nroCuentaDestino, err := consola.leerTexto("Ingrese el número de cuenta al que desea transferir: ")
 			if err != nil {
 				fmt.Printf("Fallo: %s\n", err.Error())
 				return false, err
@@ -163,7 +161,6 @@ func (consola *consolaa) menuOperaciones() (bool, error) {
 			destino := entidad.Cuenta{Numero: nroCuentaDestino}
 			estado, id, err := consola.Cajero.RealizarTransferencia(destino, nuevoMonto)
 			if err != nil {
-				fmt.Printf("Fallo: %s\n", err.Error())
 				return false, err
 
 			}
@@ -195,12 +192,12 @@ func (consola *consolaa) Iniciar() {
 
 		if !consola.Cajero.Sesion.Activa {
 			if _, err := consola.menuLogin(); err != nil {
-				fmt.Printf("Error: %v\n", err)
-				time.Sleep(1 * time.Second)
+				fmt.Printf("%sError: %v\n", Red, err)
+				time.Sleep(2 * time.Second)
 			}
 		} else {
 			if _, err := consola.menuOperaciones(); err != nil {
-				fmt.Printf("Error: %v\n", err)
+				fmt.Printf("%sError: %v%s\n", Red, err, Reset)
 				time.Sleep(1 * time.Second)
 			}
 		}
