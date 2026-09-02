@@ -13,13 +13,13 @@ type SucursalAlmacenamiento struct {
 
 func (sucursal *SucursalAlmacenamiento) ValidarTarjeta(tajeta entidad.Tarjeta) (bool, error) {
 
-	_, existe := sucursal.Tarjetas[tajeta.Numero]
+	tarjetaEncontrada, existe := sucursal.Tarjetas[tajeta.Numero]
 
 	if !existe {
 		return false, errors.New("Tarjeta invalida")
 	}
 
-	if tajeta.Vencimiento.Before(time.Now()) {
+	if tarjetaEncontrada.Vencimiento.Before(time.Now()) {
 		return false, errors.New("Tarjeta vencida.")
 	}
 
@@ -49,4 +49,5 @@ func (sucursal *SucursalAlmacenamiento) seedTarjetas() {
 
 	sucursal.Tarjetas[tarjetaValida.Numero] = tarjetaValida
 	sucursal.Tarjetas[tarjetaVencida.Numero] = tarjetaVencida
+
 }

@@ -7,24 +7,40 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/nicos92/dis_cajero/internal/dominio/entidad"
 	"github.com/nicos92/dis_cajero/internal/servicio"
 )
 
-type Consola struct {
+// Códigos de color ANSI
+const (
+	Reset  = "\033[0m"
+	Red    = "\033[31m"
+	Green  = "\033[32m"
+	Yellow = "\033[33m"
+	Blue   = "\033[34m"
+	Purple = "\033[35m"
+	Cyan   = "\033[36m"
+	White  = "\033[37m"
+
+	// Estilos
+	Bold = "\033[1m"
+)
+
+type consolaa struct {
 	Cajero *servicio.CajeroService
 	Bufio  *bufio.Reader
 }
 
-func NuevaConsola(cajero *servicio.CajeroService) *Consola {
-	return &Consola{
+func NuevaConsola(cajero *servicio.CajeroService) *consolaa {
+	return &consolaa{
 		Cajero: cajero,
 		Bufio:  bufio.NewReader(os.Stdin),
 	}
 }
 
-func (consola *Consola) leerTexto(mensaje string) (string, error) {
+func (consola *consolaa) leerTexto(mensaje string) (string, error) {
 	fmt.Print(mensaje)
 	entrada, err := consola.Bufio.ReadString('\n')
 
@@ -35,21 +51,21 @@ func (consola *Consola) leerTexto(mensaje string) (string, error) {
 	return strings.TrimSpace(entrada), nil
 }
 
-func (consola *Consola) menuLogin() (bool, error) {
-	fmt.Println("Bienvenido a Banco Central")
-	nroTarjeta, err := consola.leerTexto("Ingrese el número de la tarjeta")
+func (consola *consolaa) menuLogin() (bool, error) {
+	fmt.Println(Green + Bold + "Bienvenido al Banco Central")
+	nroTarjeta, err := consola.leerTexto(Reset + "Ingrese el número de la tarjeta: ")
 
 	if err != nil {
 		return false, err
 	}
 
-	nroCuenta, err := consola.leerTexto("Ingrese el número de la cuenta")
+	nroCuenta, err := consola.leerTexto("Ingrese el número de la cuenta: ")
 
 	if err != nil {
 		return false, err
 	}
 
-	nroPin, err := consola.leerTexto("Ingrese el número de PIN")
+	nroPin, err := consola.leerTexto("Ingrese el número de PIN: ")
 
 	if err != nil {
 		return false, err
@@ -62,6 +78,7 @@ func (consola *Consola) menuLogin() (bool, error) {
 
 	if err != nil {
 		fmt.Printf("Error de autenticacion: %s\n", err.Error())
+		time.Sleep(1000 * time.Millisecond)
 		return false, err
 	}
 	if !sesion.Activa {
@@ -69,11 +86,12 @@ func (consola *Consola) menuLogin() (bool, error) {
 		return false, err
 	}
 	fmt.Println("Inicio de sesión exitoso")
+	time.Sleep(1000 * time.Millisecond)
 
 	return true, nil
 }
 
-func (consola *Consola) menuOperaciones() (bool, error) {
+func (consola *consolaa) menuOperaciones() (bool, error) {
 	fmt.Printf("Bienvenido\nIngresaste con la cuenta %s\n", consola.Cajero.Sesion.CuentaCliente.Numero)
 	fmt.Println("\n--- Menú Principal ---")
 	fmt.Println("1. Consultar Saldo")
@@ -161,8 +179,9 @@ func (consola *Consola) menuOperaciones() (bool, error) {
 	return true, nil
 }
 
-func (consola *Consola) Iniciar() {
+func (consola *consolaa) Iniciar() {
 	for {
+		// helpers.CallClear()
 		if !consola.Cajero.Sesion.Activa {
 			consola.menuLogin()
 		} else {

@@ -39,6 +39,7 @@ func (redCentral *RedCentralAlmacenamiento) seedCuentas() {
 
 	redCentral.Cuentas[cuentaUno.Numero] = cuentaUno
 	redCentral.Cuentas[cuentaDos.Numero] = cuentaDos
+
 }
 
 func (redCentral *RedCentralAlmacenamiento) ValidarPin(cuenta entidad.Cuenta) (bool, error) {
