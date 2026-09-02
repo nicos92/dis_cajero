@@ -1,4 +1,4 @@
-package service
+package servicio
 
 import (
 	"errors"
@@ -65,7 +65,7 @@ func (cajeroService *CajeroService) ExtraerEfectivo(monto float64) (entidad.Esta
 	if cajeroService.Sesion.CuentaCliente.Saldo < monto {
 		return entidad.EstadoCancelado, 0, errors.New("Saldo insuficiente en la cuenta.")
 	}
-	estado, id, err := cajeroService.ClienteRedCentral.DebitarExtaccion(cajeroService.Sesion.CuentaCliente, monto)
+	estado, id, err := cajeroService.ClienteRedCentral.DebitarExtraccion(cajeroService.Sesion.CuentaCliente, monto)
 
 	if err != nil {
 		return estado, id, err
