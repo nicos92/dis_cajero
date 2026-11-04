@@ -123,6 +123,25 @@ func (consola *consolaa) seleccionarCuenta(cuentas []entidad.Cuenta) error {
 	return err
 }
 
+func (consola *consolaa) confirmarOperacion(detalle string) (bool, error) {
+	fmt.Println(Bold + Yellow + "\nConfirme la operación" + Reset)
+	fmt.Print(detalle)
+
+	respuesta, err := consola.leerTexto("¿Desea continuar? (s/n): ")
+	if err != nil {
+		return false, err
+	}
+
+	switch strings.ToLower(respuesta) {
+	case "s", "si", "sí":
+		return true, nil
+	case "n", "no":
+		return false, nil
+	default:
+		return false, errors.New("respuesta de confirmación inválida")
+	}
+}
+
 func (consola *consolaa) menuOperaciones() (bool, error) {
 	sesion := consola.Cajero.SesionActual()
 
@@ -161,6 +180,17 @@ func (consola *consolaa) menuOperaciones() (bool, error) {
 				return false, errors.New("error al ingresar el monto")
 
 			}
+
+			detalle := fmt.Sprintf("Tipo: Extracción\nCuenta de origen: %s\nMonto: %.2f$\n", sesion.CuentaCliente.Numero, nuevoMonto)
+			confirmado, err := consola.confirmarOperacion(detalle)
+			if err != nil {
+				return false, err
+			}
+			if !confirmado {
+				fmt.Println("Operación cancelada.")
+				return true, nil
+			}
+
 			estado, id, err := consola.Cajero.ExtraerEfectivo(nuevoMonto)
 			if err != nil {
 				return false, err
@@ -190,6 +220,17 @@ func (consola *consolaa) menuOperaciones() (bool, error) {
 				return false, err
 			}
 			destino := entidad.Cuenta{Numero: nroCuentaDestino}
+
+			detalle := fmt.Sprintf("Tipo: Transferencia\nCuenta de origen: %s\nCuenta de destino: %s\nMonto: %.2f$\n", sesion.CuentaCliente.Numero, destino.Numero, nuevoMonto)
+			confirmado, err := consola.confirmarOperacion(detalle)
+			if err != nil {
+				return false, err
+			}
+			if !confirmado {
+				fmt.Println("Operación cancelada.")
+				return true, nil
+			}
+
 			estado, id, err := consola.Cajero.RealizarTransferencia(destino, nuevoMonto)
 			if err != nil {
 				return false, err
