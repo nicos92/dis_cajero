@@ -13,7 +13,7 @@ import (
 
 	"github.com/nicos92/dis_cajero/internal/dominio/entidad"
 	"github.com/nicos92/dis_cajero/internal/presentacion/inputs"
-	"github.com/nicos92/dis_cajero/internal/servicio"
+	"github.com/nicos92/dis_cajero/internal/presentacion/ports"
 )
 
 // Códigos de color ANSI
@@ -32,11 +32,11 @@ const (
 )
 
 type consolaa struct {
-	Cajero *servicio.CajeroService
+	Cajero ports.Cajero
 	Bufio  *bufio.Reader
 }
 
-func NuevaConsola(cajero *servicio.CajeroService) *consolaa {
+func NuevaConsola(cajero ports.Cajero) *consolaa {
 	return &consolaa{
 		Cajero: cajero,
 		Bufio:  bufio.NewReader(os.Stdin),
@@ -48,7 +48,7 @@ func (consola *consolaa) leerTexto(mensaje string) (string, error) {
 	entrada, err := consola.Bufio.ReadString('\n')
 
 	if err != nil {
-		return "", errors.New("Error al leer la entrada de texto")
+		return "", errors.New("error al leer la entrada de texto")
 	}
 
 	return strings.TrimSpace(entrada), nil
@@ -56,37 +56,39 @@ func (consola *consolaa) leerTexto(mensaje string) (string, error) {
 
 func (consola *consolaa) menuLogin() (bool, error) {
 	inputs.CallClear()
-	fmt.Println(Green + Bold + "Bienvenido al Banco Central")
-	nroTarjeta, err := consola.leerTexto(Reset + "Ingrese el número de la tarjeta: ")
+	fmt.Println(Green + Bold + "Bienvenido al Banco Central" + Reset)
 
-	if err != nil {
-		return false, err
-	}
-
-	nroCuenta, err := consola.leerTexto("Ingrese el número de la cuenta: ")
-
-	if err != nil {
-		return false, err
-	}
-
-	nroPin, err := consola.leerTexto("Ingrese el número de PIN: ")
-
+	nroTarjeta, err := consola.leerTexto("Ingrese el número de la tarjeta: ")
 	if err != nil {
 		return false, err
 	}
 
 	tarjeta := entidad.Tarjeta{Numero: nroTarjeta}
-	cuenta := entidad.Cuenta{Numero: nroCuenta, Pin: nroPin}
 
-	sesion, err := consola.Cajero.AutenticarUsuario(tarjeta, cuenta)
+	if err := consola.Cajero.ValidarTarjeta(tarjeta); err != nil {
+		return false, err
+	}
 
+	fmt.Println(Green + "Tarjeta válida" + Reset)
+
+	nroPin, err := consola.leerTexto("Ingrese el número de PIN: ")
 	if err != nil {
 		return false, err
 	}
-	if !sesion.Activa {
-		fmt.Println("La sesión no está activa")
-		return false, nil
+
+	if _, err := consola.Cajero.AutenticarUsuario(tarjeta, nroPin); err != nil {
+		return false, err
 	}
+
+	cuentas, err := consola.Cajero.ObtenerCuentasAsociadas()
+	if err != nil {
+		return false, err
+	}
+
+	if err := consola.seleccionarCuenta(cuentas); err != nil {
+		return false, err
+	}
+
 	fmt.Println(Green + "Inicio de sesión exitoso" + Reset)
 	time.Sleep(1000 * time.Millisecond)
 	inputs.CallClear()
@@ -94,8 +96,37 @@ func (consola *consolaa) menuLogin() (bool, error) {
 	return true, nil
 }
 
+func (consola *consolaa) seleccionarCuenta(cuentas []entidad.Cuenta) error {
+	fmt.Println(Bold + Yellow + "\nCuentas asociadas a la tarjeta" + Reset)
+
+	for indice, cuenta := range cuentas {
+		estado := "activa"
+		if !cuenta.Activa {
+			estado = "inactiva"
+		}
+
+		fmt.Printf("%d. Cuenta %s (%s)\n", indice+1, cuenta.Numero, estado)
+	}
+
+	opcion, err := consola.leerTexto("Seleccione una cuenta: ")
+	if err != nil {
+		return err
+	}
+
+	indice, err := strconv.Atoi(opcion)
+	if err != nil || indice < 1 || indice > len(cuentas) {
+		return errors.New("opción de cuenta inválida")
+	}
+
+	_, err = consola.Cajero.SeleccionarCuenta(cuentas[indice-1].Numero)
+
+	return err
+}
+
 func (consola *consolaa) menuOperaciones() (bool, error) {
-	fmt.Printf("%sBienvenido\nIngresaste con la cuenta %s%s\n", Green, consola.Cajero.Sesion.CuentaCliente.Numero, Reset)
+	sesion := consola.Cajero.SesionActual()
+
+	fmt.Printf("%sBienvenido\nIngresaste con la cuenta %s%s\n", Green, sesion.CuentaCliente.Numero, Reset)
 	fmt.Println(Bold + Yellow + "\nMenú Principal" + Reset)
 	fmt.Println("1. Consultar Saldo")
 	fmt.Println("2. Extraer Efectivo")
@@ -121,13 +152,13 @@ func (consola *consolaa) menuOperaciones() (bool, error) {
 		}
 	case "2":
 		{
-			monto, err := consola.leerTexto("Ingrese el monto que sea retirar: ")
+			monto, err := consola.leerTexto("Ingrese el monto que desea retirar: ")
 			if err != nil {
 				return false, err
 			}
 			nuevoMonto, err := strconv.ParseFloat(monto, 64)
 			if err != nil {
-				return false, errors.New("error al ingresar el monto. ")
+				return false, errors.New("error al ingresar el monto")
 
 			}
 			estado, id, err := consola.Cajero.ExtraerEfectivo(nuevoMonto)
@@ -136,12 +167,12 @@ func (consola *consolaa) menuOperaciones() (bool, error) {
 
 			}
 
-			fmt.Printf("Extración número %d: %v\n", id, estado)
+			fmt.Printf("Extracción número %d: %v\n", id, estado)
 
 		}
 	case "3":
 		{
-			monto, err := consola.leerTexto("Ingrese el monto que sea transferir: ")
+			monto, err := consola.leerTexto("Ingrese el monto que desea transferir: ")
 			if err != nil {
 				fmt.Printf("Fallo: %s\n", err.Error())
 				return false, err
@@ -169,7 +200,9 @@ func (consola *consolaa) menuOperaciones() (bool, error) {
 		}
 	case "4":
 		{
-			consola.Cajero.CerrarSesion()
+			if _, err := consola.Cajero.CerrarSesion(); err != nil {
+				return false, err
+			}
 			fmt.Println("Sesión cerrada. Puede retirar su tarjeta.")
 		}
 	default:
@@ -190,7 +223,7 @@ func (consola *consolaa) Iniciar() {
 		default:
 		}
 
-		if !consola.Cajero.Sesion.Activa {
+		if !consola.Cajero.SesionActual().Activa {
 			if _, err := consola.menuLogin(); err != nil {
 				fmt.Printf("%sError: %v\n", Red, err)
 				time.Sleep(2 * time.Second)
