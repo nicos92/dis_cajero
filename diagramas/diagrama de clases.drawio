@@ -1,0 +1,100 @@
+<mxfile host="Electron">
+  <diagram name="Página-1" id="qWdTVpvA0IM_PjFsWqmE">
+    <mxGraphModel dx="1323" dy="817" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="4ik-GXqrkpsEO0ComfPE-1" parent="1" style="text;html=1;fontSize=20;fontStyle=1;align=left;" value="Diagrama de Clases - Sistema Cajero Automático" vertex="1">
+          <mxGeometry height="40" width="720" x="140" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="4ik-GXqrkpsEO0ComfPE-2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;fillColor=#ffffff;strokeColor=#333333;fontSize=12;" value="&lt;b&gt;&lt;u&gt;Cliente&lt;/u&gt;&lt;/b&gt;&lt;br&gt;-_id: string&lt;br&gt;-_nombre: string&lt;br&gt;-_tarjetas: Tarjeta[]&lt;br&gt;────────&lt;br&gt;+getTarjetas(): Tarjeta[]" vertex="1">
+          <mxGeometry height="180" width="240" x="480" y="340" as="geometry" />
+        </mxCell>
+        <mxCell id="4ik-GXqrkpsEO0ComfPE-3" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;fillColor=#ffffff;strokeColor=#333333;fontSize=12;" value="&lt;b&gt;&lt;u&gt;Tarjeta&lt;/u&gt;&lt;/b&gt;&lt;br&gt;-_numero: string&lt;br&gt;-_pin: string&lt;br&gt;-_vencimiento: Date&lt;br&gt;-_cuentas: Cuenta[]&lt;br&gt;────────&lt;br&gt;+estaVencida(ahora: Date): bool&lt;br&gt;+validarPin(pin: string): bool" vertex="1">
+          <mxGeometry height="200" width="250" x="260" y="520" as="geometry" />
+        </mxCell>
+        <mxCell id="4ik-GXqrkpsEO0ComfPE-4" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;fillColor=#ffffff;strokeColor=#333333;fontSize=12;" value="&lt;b&gt;&lt;u&gt;Cuenta&lt;/u&gt;&lt;/b&gt;&lt;br&gt;-_numero: string&lt;br&gt;-_saldo: float&lt;br&gt;-_activa: bool&lt;br&gt;────────&lt;br&gt;+consultarSaldo(): float&lt;br&gt;+debitar(monto: float): bool&lt;br&gt;+acreditar(monto: float): void" vertex="1">
+          <mxGeometry height="200" width="250" x="700" y="520" as="geometry" />
+        </mxCell>
+        <mxCell id="4ik-GXqrkpsEO0ComfPE-5" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;fillColor=#ffffff;strokeColor=#333333;fontSize=12;" value="&lt;b&gt;&lt;u&gt;Sesion&lt;/u&gt;&lt;/b&gt;&lt;br&gt;-_cliente: Cliente&lt;br&gt;-_tarjeta: Tarjeta&lt;br&gt;-_cuenta: Cuenta&lt;br&gt;-_activa: bool&lt;br&gt;────────&lt;br&gt;+iniciar(): void&lt;br&gt;+seleccionarCuenta(cuenta: Cuenta): void&lt;br&gt;+cerrar(): void&lt;br&gt;+estaActiva(): bool" vertex="1">
+          <mxGeometry height="220" width="270" x="480" y="760" as="geometry" />
+        </mxCell>
+        <mxCell id="4ik-GXqrkpsEO0ComfPE-6" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;fillColor=#f5f5f5;strokeColor=#333333;fontSize=12;" value="&lt;i&gt;«abstract»&lt;/i&gt;&lt;br&gt;&lt;b&gt;&lt;u&gt;Operacion&lt;/u&gt;&lt;/b&gt;&lt;br&gt;#_sesion: Sesion&lt;br&gt;#_monto: float&lt;br&gt;#_fecha: Date&lt;br&gt;────────&lt;br&gt;+ejecutar(): Resultado {abstract}" vertex="1">
+          <mxGeometry height="180" width="250" x="490" y="1020" as="geometry" />
+        </mxCell>
+        <mxCell id="4ik-GXqrkpsEO0ComfPE-7" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;fillColor=#ffffff;strokeColor=#333333;fontSize=12;" value="&lt;b&gt;&lt;u&gt;Consulta&lt;/u&gt;&lt;/b&gt;&lt;br&gt;────────&lt;br&gt;+ejecutar(): Resultado" vertex="1">
+          <mxGeometry height="110" width="240" x="200" y="1260" as="geometry" />
+        </mxCell>
+        <mxCell id="4ik-GXqrkpsEO0ComfPE-8" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;fillColor=#ffffff;strokeColor=#333333;fontSize=12;" value="&lt;b&gt;&lt;u&gt;Extraccion&lt;/u&gt;&lt;/b&gt;&lt;br&gt;────────&lt;br&gt;+ejecutar(): Resultado" vertex="1">
+          <mxGeometry height="110" width="240" x="490" y="1260" as="geometry" />
+        </mxCell>
+        <mxCell id="4ik-GXqrkpsEO0ComfPE-9" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;fillColor=#ffffff;strokeColor=#333333;fontSize=12;" value="&lt;b&gt;&lt;u&gt;Transferencia&lt;/u&gt;&lt;/b&gt;&lt;br&gt;-_cuentaDestino: Cuenta&lt;br&gt;────────&lt;br&gt;+ejecutar(): Resultado" vertex="1">
+          <mxGeometry height="130" width="250" x="780" y="1260" as="geometry" />
+        </mxCell>
+        <mxCell id="4ik-GXqrkpsEO0ComfPE-10" edge="1" parent="1" source="4ik-GXqrkpsEO0ComfPE-2" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=none;" target="4ik-GXqrkpsEO0ComfPE-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4ik-GXqrkpsEO0ComfPE-11" connectable="0" parent="4ik-GXqrkpsEO0ComfPE-10" style="edgeLabel;html=1;fontSize=11;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.8" as="geometry" />
+        </mxCell>
+        <mxCell id="4ik-GXqrkpsEO0ComfPE-12" connectable="0" parent="4ik-GXqrkpsEO0ComfPE-10" style="edgeLabel;html=1;fontSize=11;" value="0..*" vertex="1">
+          <mxGeometry relative="1" x="0.8" as="geometry" />
+        </mxCell>
+        <mxCell id="4ik-GXqrkpsEO0ComfPE-13" edge="1" parent="1" source="4ik-GXqrkpsEO0ComfPE-3" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=none;" target="4ik-GXqrkpsEO0ComfPE-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4ik-GXqrkpsEO0ComfPE-14" connectable="0" parent="4ik-GXqrkpsEO0ComfPE-13" style="edgeLabel;html=1;fontSize=11;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.8" as="geometry" />
+        </mxCell>
+        <mxCell id="4ik-GXqrkpsEO0ComfPE-15" connectable="0" parent="4ik-GXqrkpsEO0ComfPE-13" style="edgeLabel;html=1;fontSize=11;" value="0..*" vertex="1">
+          <mxGeometry relative="1" x="0.8" as="geometry" />
+        </mxCell>
+        <mxCell id="4ik-GXqrkpsEO0ComfPE-16" edge="1" parent="1" source="4ik-GXqrkpsEO0ComfPE-5" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=none;startArrow=diamondThin;startFill=1;startSize=14;fontSize=11;" target="4ik-GXqrkpsEO0ComfPE-3" value="contiene">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4ik-GXqrkpsEO0ComfPE-17" connectable="0" parent="4ik-GXqrkpsEO0ComfPE-16" style="edgeLabel;html=1;fontSize=11;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.8" as="geometry" />
+        </mxCell>
+        <mxCell id="4ik-GXqrkpsEO0ComfPE-18" connectable="0" parent="4ik-GXqrkpsEO0ComfPE-16" style="edgeLabel;html=1;fontSize=11;" value="1" vertex="1">
+          <mxGeometry relative="1" x="0.8" as="geometry" />
+        </mxCell>
+        <mxCell id="4ik-GXqrkpsEO0ComfPE-19" edge="1" parent="1" source="4ik-GXqrkpsEO0ComfPE-5" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=none;startArrow=diamondThin;startFill=1;startSize=14;fontSize=11;" target="4ik-GXqrkpsEO0ComfPE-4" value="selecciona">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4ik-GXqrkpsEO0ComfPE-20" connectable="0" parent="4ik-GXqrkpsEO0ComfPE-19" style="edgeLabel;html=1;fontSize=11;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.8" as="geometry" />
+        </mxCell>
+        <mxCell id="4ik-GXqrkpsEO0ComfPE-21" connectable="0" parent="4ik-GXqrkpsEO0ComfPE-19" style="edgeLabel;html=1;fontSize=11;" value="0..1" vertex="1">
+          <mxGeometry relative="1" x="0.8" as="geometry" />
+        </mxCell>
+        <mxCell id="4ik-GXqrkpsEO0ComfPE-22" edge="1" parent="1" source="4ik-GXqrkpsEO0ComfPE-6" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=none;startArrow=diamondThin;startFill=1;startSize=14;fontSize=11;" target="4ik-GXqrkpsEO0ComfPE-5" value="usa">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4ik-GXqrkpsEO0ComfPE-23" connectable="0" parent="4ik-GXqrkpsEO0ComfPE-22" style="edgeLabel;html=1;fontSize=11;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.8" as="geometry" />
+        </mxCell>
+        <mxCell id="4ik-GXqrkpsEO0ComfPE-24" connectable="0" parent="4ik-GXqrkpsEO0ComfPE-22" style="edgeLabel;html=1;fontSize=11;" value="1" vertex="1">
+          <mxGeometry relative="1" x="0.8" as="geometry" />
+        </mxCell>
+        <mxCell id="4ik-GXqrkpsEO0ComfPE-25" edge="1" parent="1" source="4ik-GXqrkpsEO0ComfPE-7" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=0;endSize=16;" target="4ik-GXqrkpsEO0ComfPE-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4ik-GXqrkpsEO0ComfPE-26" edge="1" parent="1" source="4ik-GXqrkpsEO0ComfPE-8" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=0;endSize=16;" target="4ik-GXqrkpsEO0ComfPE-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4ik-GXqrkpsEO0ComfPE-27" edge="1" parent="1" source="4ik-GXqrkpsEO0ComfPE-9" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=0;endSize=16;" target="4ik-GXqrkpsEO0ComfPE-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4ik-GXqrkpsEO0ComfPE-28" edge="1" parent="1" source="4ik-GXqrkpsEO0ComfPE-9" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=none;fontSize=11;" target="4ik-GXqrkpsEO0ComfPE-4" value="destino">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4ik-GXqrkpsEO0ComfPE-29" connectable="0" parent="4ik-GXqrkpsEO0ComfPE-28" style="edgeLabel;html=1;fontSize=11;" value="0..*" vertex="1">
+          <mxGeometry relative="1" x="-0.8" as="geometry" />
+        </mxCell>
+        <mxCell id="4ik-GXqrkpsEO0ComfPE-30" connectable="0" parent="4ik-GXqrkpsEO0ComfPE-28" style="edgeLabel;html=1;fontSize=11;" value="1" vertex="1">
+          <mxGeometry relative="1" x="0.8" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
