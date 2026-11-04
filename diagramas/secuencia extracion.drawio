@@ -1,0 +1,73 @@
+<mxfile host="Electron">
+  <diagram name="Página-1" id="4Pc8UkTkKF3KoDRdHOtK">
+    <mxGraphModel dx="860" dy="531" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="edH3YltwR9536oxaUxEs-1" parent="1" style="text;html=1;fontSize=20;fontStyle=1;align=left;" value="Secuencia - Extracción de Efectivo" vertex="1">
+          <mxGeometry height="40" width="720" x="414" y="140" as="geometry" />
+        </mxCell>
+        <mxCell id="edH3YltwR9536oxaUxEs-2" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;size=50;whiteSpace=wrap;html=1;fontStyle=1;" value="Cliente" vertex="1">
+          <mxGeometry height="800" width="160" x="434" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="edH3YltwR9536oxaUxEs-3" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;size=50;whiteSpace=wrap;html=1;fontStyle=1;" value=":PantallaCajero" vertex="1">
+          <mxGeometry height="800" width="180" x="714" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="edH3YltwR9536oxaUxEs-4" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;size=50;whiteSpace=wrap;html=1;fontStyle=1;" value=":Sesion" vertex="1">
+          <mxGeometry height="800" width="180" x="1014" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="edH3YltwR9536oxaUxEs-5" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;size=50;whiteSpace=wrap;html=1;fontStyle=1;" value=":CentralDB" vertex="1">
+          <mxGeometry height="800" width="180" x="1314" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="edH3YltwR9536oxaUxEs-6" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="230" width="12" x="508" y="290" as="geometry" />
+        </mxCell>
+        <mxCell id="edH3YltwR9536oxaUxEs-7" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="530" width="12" x="798" y="290" as="geometry" />
+        </mxCell>
+        <mxCell id="edH3YltwR9536oxaUxEs-8" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="70" width="12" x="1098" y="540" as="geometry" />
+        </mxCell>
+        <mxCell id="edH3YltwR9536oxaUxEs-9" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="120" width="12" x="1398" y="640" as="geometry" />
+        </mxCell>
+        <mxCell id="edH3YltwR9536oxaUxEs-10" edge="1" parent="1" source="edH3YltwR9536oxaUxEs-2" style="html=1;endArrow=classic;endSize=6;startSize=6;fontSize=10;labelBackgroundColor=#ffffff;exitX=0.5;exitY=0.125;entryX=0.5;entryY=0.125;" target="edH3YltwR9536oxaUxEs-3" value="seleccionarOperacion(«Extracción»)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edH3YltwR9536oxaUxEs-11" edge="1" parent="1" source="edH3YltwR9536oxaUxEs-3" style="html=1;endArrow=classic;endSize=6;startSize=6;fontSize=10;labelBackgroundColor=#ffffff;exitX=0.5;exitY=0.1875;entryX=0.5;entryY=0.1875;" target="edH3YltwR9536oxaUxEs-2" value="solicitarMonto()">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edH3YltwR9536oxaUxEs-12" edge="1" parent="1" source="edH3YltwR9536oxaUxEs-2" style="html=1;endArrow=classic;endSize=6;startSize=6;fontSize=10;labelBackgroundColor=#ffffff;exitX=0.5;exitY=0.25;entryX=0.5;entryY=0.25;" target="edH3YltwR9536oxaUxEs-3" value="ingresarMonto(monto)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edH3YltwR9536oxaUxEs-13" edge="1" parent="1" source="edH3YltwR9536oxaUxEs-3" style="html=1;endArrow=classic;endSize=6;startSize=6;fontSize=10;labelBackgroundColor=#ffffff;exitX=0.5;exitY=0.3125;entryX=0.5;entryY=0.3125;" target="edH3YltwR9536oxaUxEs-2" value="mostrarConfirmacion(cuenta, monto)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edH3YltwR9536oxaUxEs-14" edge="1" parent="1" source="edH3YltwR9536oxaUxEs-2" style="html=1;endArrow=classic;endSize=6;startSize=6;fontSize=10;labelBackgroundColor=#ffffff;exitX=0.5;exitY=0.375;entryX=0.5;entryY=0.375;" target="edH3YltwR9536oxaUxEs-3" value="confirmarOperacion(true)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edH3YltwR9536oxaUxEs-15" edge="1" parent="1" source="edH3YltwR9536oxaUxEs-3" style="html=1;endArrow=classic;endSize=6;startSize=6;fontSize=10;labelBackgroundColor=#ffffff;exitX=0.5;exitY=0.4375;entryX=0.5;entryY=0.4375;" target="edH3YltwR9536oxaUxEs-4" value="validarSesionActiva()">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edH3YltwR9536oxaUxEs-16" edge="1" parent="1" source="edH3YltwR9536oxaUxEs-4" style="html=1;dashed=1;endArrow=open;endSize=6;startSize=6;fontSize=10;labelBackgroundColor=#ffffff;exitX=0.5;exitY=0.5;entryX=0.5;entryY=0.5;" target="edH3YltwR9536oxaUxEs-3" value="sesionValida">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edH3YltwR9536oxaUxEs-17" edge="1" parent="1" source="edH3YltwR9536oxaUxEs-3" style="html=1;endArrow=classic;endSize=6;startSize=6;fontSize=10;labelBackgroundColor=#ffffff;exitX=0.5;exitY=0.5625;entryX=0.5;entryY=0.5625;" target="edH3YltwR9536oxaUxEs-5" value="debitarExtraccion(cuenta, monto)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edH3YltwR9536oxaUxEs-18" edge="1" parent="1" source="edH3YltwR9536oxaUxEs-5" style="html=1;endArrow=classic;endSize=6;startSize=6;fontSize=10;labelBackgroundColor=#ffffff;edgeStyle=orthogonalEdgeStyle;exitX=0.5;exitY=0.625;entryX=0.5;entryY=0.66;" target="edH3YltwR9536oxaUxEs-5" value="validarSaldoYRegistrar()">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edH3YltwR9536oxaUxEs-19" edge="1" parent="1" source="edH3YltwR9536oxaUxEs-5" style="html=1;dashed=1;endArrow=open;endSize=6;startSize=6;fontSize=10;labelBackgroundColor=#ffffff;exitX=0.5;exitY=0.6875;entryX=0.5;entryY=0.6875;" target="edH3YltwR9536oxaUxEs-3" value="estado, idTransaccion">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edH3YltwR9536oxaUxEs-20" edge="1" parent="1" source="edH3YltwR9536oxaUxEs-3" style="html=1;dashed=1;endArrow=open;endSize=6;startSize=6;fontSize=10;labelBackgroundColor=#ffffff;exitX=0.5;exitY=0.75;entryX=0.5;entryY=0.75;" target="edH3YltwR9536oxaUxEs-2" value="mostrarResultado(estado, id)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edH3YltwR9536oxaUxEs-21" parent="1" style="shape=note;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;" value="Si el cliente cancela la confirmación, no se debita la cuenta ni se registra la transacción." vertex="1">
+          <mxGeometry height="70" width="420" x="714" y="920" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,85 @@
+<mxfile host="Electron">
+  <diagram name="Página-1" id="H3_q1Qea6jP7val7PkO7">
+    <mxGraphModel dx="860" dy="531" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="TvRnnY3gHjczCrJl5h3_-1" parent="1" style="text;html=1;fontSize=20;fontStyle=1;align=left;" value="Secuencia CU 1 - Autenticar Usuario" vertex="1">
+          <mxGeometry height="40" width="720" x="280" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="TvRnnY3gHjczCrJl5h3_-2" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;size=50;whiteSpace=wrap;html=1;fontStyle=1;" value="Cliente" vertex="1">
+          <mxGeometry height="850" width="160" x="300" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="TvRnnY3gHjczCrJl5h3_-3" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;size=50;whiteSpace=wrap;html=1;fontStyle=1;" value=":PantallaCajero" vertex="1">
+          <mxGeometry height="850" width="180" x="580" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="TvRnnY3gHjczCrJl5h3_-4" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;size=50;whiteSpace=wrap;html=1;fontStyle=1;" value=":SucursalDB" vertex="1">
+          <mxGeometry height="850" width="180" x="880" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="TvRnnY3gHjczCrJl5h3_-5" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;size=50;whiteSpace=wrap;html=1;fontStyle=1;" value=":CentralDB" vertex="1">
+          <mxGeometry height="850" width="180" x="1180" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="TvRnnY3gHjczCrJl5h3_-6" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="230" width="12" x="374" y="450" as="geometry" />
+        </mxCell>
+        <mxCell id="TvRnnY3gHjczCrJl5h3_-7" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="730" width="12" x="664" y="450" as="geometry" />
+        </mxCell>
+        <mxCell id="TvRnnY3gHjczCrJl5h3_-8" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="70" width="12" x="964" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="TvRnnY3gHjczCrJl5h3_-9" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="170" width="12" x="1264" y="700" as="geometry" />
+        </mxCell>
+        <mxCell id="TvRnnY3gHjczCrJl5h3_-10" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="70" width="12" x="1264" y="1000" as="geometry" />
+        </mxCell>
+        <mxCell id="TvRnnY3gHjczCrJl5h3_-11" edge="1" parent="1" source="TvRnnY3gHjczCrJl5h3_-2" style="html=1;endArrow=classic;endSize=6;startSize=6;fontSize=10;labelBackgroundColor=#ffffff;exitX=0.5;exitY=0.1176;entryX=0.5;entryY=0.1176;" target="TvRnnY3gHjczCrJl5h3_-3" value="ingresarTarjeta(numero)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="TvRnnY3gHjczCrJl5h3_-12" edge="1" parent="1" source="TvRnnY3gHjczCrJl5h3_-3" style="html=1;endArrow=classic;endSize=6;startSize=6;fontSize=10;labelBackgroundColor=#ffffff;exitX=0.5;exitY=0.1765;entryX=0.5;entryY=0.1765;" target="TvRnnY3gHjczCrJl5h3_-4" value="validarTarjeta(numero)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="TvRnnY3gHjczCrJl5h3_-13" edge="1" parent="1" source="TvRnnY3gHjczCrJl5h3_-4" style="html=1;dashed=1;endArrow=open;endSize=6;startSize=6;fontSize=10;labelBackgroundColor=#ffffff;exitX=0.5;exitY=0.2353;entryX=0.5;entryY=0.2353;" target="TvRnnY3gHjczCrJl5h3_-3" value="tarjetaVigente / tarjetaVencida">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="TvRnnY3gHjczCrJl5h3_-14" edge="1" parent="1" source="TvRnnY3gHjczCrJl5h3_-3" style="html=1;endArrow=classic;endSize=6;startSize=6;fontSize=10;labelBackgroundColor=#ffffff;exitX=0.5;exitY=0.2941;entryX=0.5;entryY=0.2941;" target="TvRnnY3gHjczCrJl5h3_-2" value="solicitarPin()">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="TvRnnY3gHjczCrJl5h3_-15" edge="1" parent="1" source="TvRnnY3gHjczCrJl5h3_-2" style="html=1;endArrow=classic;endSize=6;startSize=6;fontSize=10;labelBackgroundColor=#ffffff;exitX=0.5;exitY=0.3529;entryX=0.5;entryY=0.3529;" target="TvRnnY3gHjczCrJl5h3_-3" value="ingresarPin(pin)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="TvRnnY3gHjczCrJl5h3_-16" edge="1" parent="1" source="TvRnnY3gHjczCrJl5h3_-3" style="html=1;endArrow=classic;endSize=6;startSize=6;fontSize=10;labelBackgroundColor=#ffffff;exitX=0.5;exitY=0.4118;entryX=0.5;entryY=0.4118;" target="TvRnnY3gHjczCrJl5h3_-5" value="validarPin(tarjeta, pin)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="TvRnnY3gHjczCrJl5h3_-17" edge="1" parent="1" source="TvRnnY3gHjczCrJl5h3_-5" style="html=1;dashed=1;endArrow=open;endSize=6;startSize=6;fontSize=10;labelBackgroundColor=#ffffff;exitX=0.5;exitY=0.4706;entryX=0.5;entryY=0.4706;" target="TvRnnY3gHjczCrJl5h3_-3" value="pinValido">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="TvRnnY3gHjczCrJl5h3_-18" edge="1" parent="1" source="TvRnnY3gHjczCrJl5h3_-3" style="html=1;endArrow=classic;endSize=6;startSize=6;fontSize=10;labelBackgroundColor=#ffffff;exitX=0.5;exitY=0.5294;entryX=0.5;entryY=0.5294;" target="TvRnnY3gHjczCrJl5h3_-5" value="obtenerCuentasAsociadas(tarjeta)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="TvRnnY3gHjczCrJl5h3_-19" edge="1" parent="1" source="TvRnnY3gHjczCrJl5h3_-5" style="html=1;dashed=1;endArrow=open;endSize=6;startSize=6;fontSize=10;labelBackgroundColor=#ffffff;exitX=0.5;exitY=0.5882;entryX=0.5;entryY=0.5882;" target="TvRnnY3gHjczCrJl5h3_-3" value="listaCuentas">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="TvRnnY3gHjczCrJl5h3_-20" edge="1" parent="1" source="TvRnnY3gHjczCrJl5h3_-3" style="html=1;endArrow=classic;endSize=6;startSize=6;fontSize=10;labelBackgroundColor=#ffffff;exitX=0.5;exitY=0.6471;entryX=0.5;entryY=0.6471;" target="TvRnnY3gHjczCrJl5h3_-2" value="mostrarCuentas(cuentas)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="TvRnnY3gHjczCrJl5h3_-21" edge="1" parent="1" source="TvRnnY3gHjczCrJl5h3_-2" style="html=1;endArrow=classic;endSize=6;startSize=6;fontSize=10;labelBackgroundColor=#ffffff;exitX=0.5;exitY=0.7059;entryX=0.5;entryY=0.7059;" target="TvRnnY3gHjczCrJl5h3_-3" value="seleccionarCuenta(numeroCuenta)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="TvRnnY3gHjczCrJl5h3_-22" edge="1" parent="1" source="TvRnnY3gHjczCrJl5h3_-3" style="html=1;endArrow=classic;endSize=6;startSize=6;fontSize=10;labelBackgroundColor=#ffffff;exitX=0.5;exitY=0.7647;entryX=0.5;entryY=0.7647;" target="TvRnnY3gHjczCrJl5h3_-5" value="obtenerCuenta(numeroCuenta)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="TvRnnY3gHjczCrJl5h3_-23" edge="1" parent="1" source="TvRnnY3gHjczCrJl5h3_-5" style="html=1;dashed=1;endArrow=open;endSize=6;startSize=6;fontSize=10;labelBackgroundColor=#ffffff;exitX=0.5;exitY=0.8235;entryX=0.5;entryY=0.8235;" target="TvRnnY3gHjczCrJl5h3_-3" value="cuenta">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="TvRnnY3gHjczCrJl5h3_-24" edge="1" parent="1" source="TvRnnY3gHjczCrJl5h3_-3" style="html=1;endArrow=classic;endSize=6;startSize=6;fontSize=10;labelBackgroundColor=#ffffff;exitX=0.5;exitY=0.8824;entryX=0.5;entryY=0.9412;edgeStyle=orthogonalEdgeStyle;" target="TvRnnY3gHjczCrJl5h3_-3" value="crearSesion(tarjeta, cuenta)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="TvRnnY3gHjczCrJl5h3_-25" edge="1" parent="1" source="TvRnnY3gHjczCrJl5h3_-3" style="html=1;dashed=1;endArrow=open;endSize=6;startSize=6;fontSize=10;labelBackgroundColor=#ffffff;exitX=0.5;exitY=0.9412;entryX=0.5;entryY=0.9412;" target="TvRnnY3gHjczCrJl5h3_-2" value="sesionIniciada">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
