@@ -1,0 +1,79 @@
+<mxfile host="Electron">
+  <diagram name="Página-1" id="LQkiY9Vwj_utGvJBbEmY">
+    <mxGraphModel dx="860" dy="531" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="cO61otVqQh73R5w5bvRC-1" parent="1" style="text;html=1;fontSize=20;fontStyle=1;align=left;" value="Diagrama de Estado - Clase Sesión" vertex="1">
+          <mxGeometry height="40" width="720" x="290" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="cO61otVqQh73R5w5bvRC-2" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="24" width="24" x="310" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="cO61otVqQh73R5w5bvRC-3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;" value="Iniciada" vertex="1">
+          <mxGeometry height="60" width="160" x="390" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="cO61otVqQh73R5w5bvRC-4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;" value="Autenticando&#xa;(tarjeta)" vertex="1">
+          <mxGeometry height="60" width="200" x="630" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="cO61otVqQh73R5w5bvRC-5" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;" value="Validando&#xa;(PIN)" vertex="1">
+          <mxGeometry height="60" width="180" x="910" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="cO61otVqQh73R5w5bvRC-6" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;" value="Seleccionando&#xa;cuenta" vertex="1">
+          <mxGeometry height="60" width="200" x="1170" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="cO61otVqQh73R5w5bvRC-7" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;" value="Operando" vertex="1">
+          <mxGeometry height="70" width="180" x="1170" y="480" as="geometry" />
+        </mxCell>
+        <mxCell id="cO61otVqQh73R5w5bvRC-8" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;" value="Cerrando" vertex="1">
+          <mxGeometry height="60" width="160" x="910" y="660" as="geometry" />
+        </mxCell>
+        <mxCell id="cO61otVqQh73R5w5bvRC-9" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;" value="Cerrada" vertex="1">
+          <mxGeometry height="60" width="160" x="630" y="660" as="geometry" />
+        </mxCell>
+        <mxCell id="cO61otVqQh73R5w5bvRC-10" parent="1" style="ellipse;whiteSpace=wrap;html=1;strokeWidth=2;" value="" vertex="1">
+          <mxGeometry height="40" width="40" x="390" y="670" as="geometry" />
+        </mxCell>
+        <mxCell id="cO61otVqQh73R5w5bvRC-11" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="20" width="20" x="400" y="680" as="geometry" />
+        </mxCell>
+        <mxCell id="cO61otVqQh73R5w5bvRC-12" edge="1" parent="1" source="cO61otVqQh73R5w5bvRC-2" style="html=1;endArrow=open;endSize=10;fontSize=10;labelBackgroundColor=#ffffff;" target="cO61otVqQh73R5w5bvRC-3" value="insertar tarjeta">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cO61otVqQh73R5w5bvRC-13" edge="1" parent="1" source="cO61otVqQh73R5w5bvRC-3" style="html=1;endArrow=open;endSize=10;fontSize=10;labelBackgroundColor=#ffffff;" target="cO61otVqQh73R5w5bvRC-4" value="ingresar número de tarjeta">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cO61otVqQh73R5w5bvRC-14" edge="1" parent="1" source="cO61otVqQh73R5w5bvRC-4" style="html=1;endArrow=open;endSize=10;fontSize=10;labelBackgroundColor=#ffffff;" target="cO61otVqQh73R5w5bvRC-5" value="tarjeta vigente">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cO61otVqQh73R5w5bvRC-15" edge="1" parent="1" source="cO61otVqQh73R5w5bvRC-4" style="html=1;endArrow=open;endSize=10;fontSize=10;labelBackgroundColor=#ffffff;" target="cO61otVqQh73R5w5bvRC-9" value="tarjeta vencida / inválida">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cO61otVqQh73R5w5bvRC-16" edge="1" parent="1" source="cO61otVqQh73R5w5bvRC-5" style="html=1;endArrow=open;endSize=10;fontSize=10;labelBackgroundColor=#ffffff;" target="cO61otVqQh73R5w5bvRC-6" value="PIN correcto">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cO61otVqQh73R5w5bvRC-17" edge="1" parent="1" source="cO61otVqQh73R5w5bvRC-5" style="html=1;endArrow=open;endSize=10;fontSize=10;labelBackgroundColor=#ffffff;" target="cO61otVqQh73R5w5bvRC-9" value="PIN incorrecto / cancelar">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cO61otVqQh73R5w5bvRC-18" edge="1" parent="1" source="cO61otVqQh73R5w5bvRC-6" style="html=1;endArrow=open;endSize=10;fontSize=10;labelBackgroundColor=#ffffff;" target="cO61otVqQh73R5w5bvRC-7" value="cuenta seleccionada">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cO61otVqQh73R5w5bvRC-19" edge="1" parent="1" source="cO61otVqQh73R5w5bvRC-6" style="html=1;endArrow=open;endSize=10;fontSize=10;labelBackgroundColor=#ffffff;" target="cO61otVqQh73R5w5bvRC-9" value="cancelar">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cO61otVqQh73R5w5bvRC-20" edge="1" parent="1" source="cO61otVqQh73R5w5bvRC-7" style="html=1;endArrow=open;endSize=10;fontSize=10;labelBackgroundColor=#ffffff;edgeStyle=orthogonalEdgeStyle;exitX=1;exitY=0.3;entryX=1;entryY=0.7;" target="cO61otVqQh73R5w5bvRC-7" value="consultar / extraer / transferir">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cO61otVqQh73R5w5bvRC-21" edge="1" parent="1" source="cO61otVqQh73R5w5bvRC-7" style="html=1;endArrow=open;endSize=10;fontSize=10;labelBackgroundColor=#ffffff;" target="cO61otVqQh73R5w5bvRC-8" value="seleccionar Salir">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cO61otVqQh73R5w5bvRC-22" edge="1" parent="1" source="cO61otVqQh73R5w5bvRC-8" style="html=1;endArrow=open;endSize=10;fontSize=10;labelBackgroundColor=#ffffff;" target="cO61otVqQh73R5w5bvRC-9" value="confirmar cierre">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cO61otVqQh73R5w5bvRC-23" edge="1" parent="1" source="cO61otVqQh73R5w5bvRC-9" style="html=1;endArrow=open;endSize=10;fontSize=10;labelBackgroundColor=#ffffff;" target="cO61otVqQh73R5w5bvRC-10" value="sesión finalizada">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
