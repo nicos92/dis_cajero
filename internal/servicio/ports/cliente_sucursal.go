@@ -5,5 +5,5 @@ import (
 )
 
 type ClienteSucursal interface {
-	ValidarTarjeta(tarjeta entidad.Tarjeta) (bool, error)
+	ValidarTarjeta(tarjeta entidad.Tarjeta) (entidad.Tarjeta, error)
 }

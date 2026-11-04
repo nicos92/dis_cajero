@@ -1,7 +1,7 @@
 package almacenamiento
 
 import (
-	"errors"
+	"fmt"
 	"strconv"
 
 	entidad "github.com/nicos92/dis_cajero/internal/dominio/entidad"
@@ -26,19 +26,16 @@ func NuevoRedCentralAlmacenamiento() *RedCentralAlmacenamiento {
 func (redCentral *RedCentralAlmacenamiento) seedCuentas() {
 	cuentaUno := entidad.Cuenta{
 		Numero: "1111",
-		Pin:    "1111",
 		Saldo:  234.234,
 		Activa: true,
 	}
 	cuentaDos := entidad.Cuenta{
 		Numero: "2222",
-		Pin:    "2222",
 		Saldo:  543.54,
 		Activa: false,
 	}
 	cuentaTres := entidad.Cuenta{
 		Numero: "333",
-		Pin:    "2223332",
 		Saldo:  543.54,
 		Activa: true,
 	}
@@ -46,46 +43,54 @@ func (redCentral *RedCentralAlmacenamiento) seedCuentas() {
 	redCentral.Cuentas[cuentaUno.Numero] = cuentaUno
 	redCentral.Cuentas[cuentaDos.Numero] = cuentaDos
 	redCentral.Cuentas[cuentaTres.Numero] = cuentaTres
-
 }
 
-func (redCentral *RedCentralAlmacenamiento) ValidarPin(cuenta entidad.Cuenta) (bool, error) {
-	cuentaGuardada, existe := redCentral.Cuentas[cuenta.Numero]
+func (redCentral *RedCentralAlmacenamiento) ObtenerCuenta(numero string) (entidad.Cuenta, error) {
+	cuentaGuardada, existe := redCentral.Cuentas[numero]
 
 	if !existe {
-		return false, errors.New("La cuenta no existe")
+		return entidad.Cuenta{}, fmt.Errorf("%w: %s", entidad.ErrCuentaNoExiste, numero)
 	}
 
-	if !cuentaGuardada.Activa {
-		return false, errors.New("La cuenta no esta activada")
+	return cuentaGuardada, nil
+}
+
+func (redCentral *RedCentralAlmacenamiento) ObtenerCuentas(numeros []string) ([]entidad.Cuenta, error) {
+	cuentas := make([]entidad.Cuenta, 0, len(numeros))
+
+	for _, numero := range numeros {
+		cuenta, err := redCentral.ObtenerCuenta(numero)
+		if err != nil {
+			return nil, err
+		}
+
+		cuentas = append(cuentas, cuenta)
 	}
 
-	if cuentaGuardada.Pin != cuenta.Pin {
-		return false, errors.New("El Pin es incorrecto")
-	}
-
-	return true, nil
+	return cuentas, nil
 }
 
 func (redCentral *RedCentralAlmacenamiento) ConsultarSaldo(cuenta entidad.Cuenta) (float64, error) {
-	cuentaGuardada, existe := redCentral.Cuentas[cuenta.Numero]
-
-	if !existe {
-		return 0, errors.New("La cuenta no existe")
+	cuentaGuardada, err := redCentral.ObtenerCuenta(cuenta.Numero)
+	if err != nil {
+		return 0, err
 	}
 
 	return cuentaGuardada.Saldo, nil
 }
 
 func (redCentral *RedCentralAlmacenamiento) DebitarExtraccion(cuenta entidad.Cuenta, monto float64) (entidad.EstadoTransaccion, int, error) {
-	cuentaGuardada, existe := redCentral.Cuentas[cuenta.Numero]
+	cuentaGuardada, err := redCentral.ObtenerCuenta(cuenta.Numero)
+	if err != nil {
+		return entidad.EstadoCancelado, 0, err
+	}
 
-	if !existe {
-		return entidad.EstadoCancelado, 0, errors.New("La cuenta no existe")
+	if !cuentaGuardada.Activa {
+		return entidad.EstadoCancelado, 0, fmt.Errorf("%w: %s", entidad.ErrCuentaInactiva, cuenta.Numero)
 	}
 
 	if cuentaGuardada.Saldo < monto {
-		return entidad.EstadoCancelado, 0, errors.New("Saldo insuficiente para extraer")
+		return entidad.EstadoCancelado, 0, entidad.ErrSaldoInsuficiente
 	}
 
 	cuentaGuardada.Saldo -= monto
@@ -99,36 +104,36 @@ func (redCentral *RedCentralAlmacenamiento) DebitarExtraccion(cuenta entidad.Cue
 }
 
 func (redCentral *RedCentralAlmacenamiento) TransferirACuenta(origen entidad.Cuenta, destino entidad.Cuenta, monto float64) (entidad.EstadoTransaccion, int, error) {
-	cuentaOrigen, existe := redCentral.Cuentas[origen.Numero]
+	cuentaOrigen, err := redCentral.ObtenerCuenta(origen.Numero)
+	if err != nil {
+		return entidad.EstadoCancelado, 0, err
+	}
 
-	if !existe {
-		return entidad.EstadoCancelado, 0, errors.New("La cuenta de origen no existe")
+	if !cuentaOrigen.Activa {
+		return entidad.EstadoCancelado, 0, fmt.Errorf("%w: %s", entidad.ErrCuentaInactiva, origen.Numero)
 	}
 
 	if cuentaOrigen.Saldo < monto {
-		return entidad.EstadoCancelado, 0, errors.New("Saldo insuficiente para transferir")
+		return entidad.EstadoCancelado, 0, entidad.ErrSaldoInsuficiente
 	}
 
-	cuentaDestino, existe := redCentral.Cuentas[destino.Numero]
-
-	if !existe {
-		return entidad.EstadoCancelado, 0, errors.New("La cuenta de destino no existe")
+	cuentaDestino, err := redCentral.ObtenerCuenta(destino.Numero)
+	if err != nil {
+		return entidad.EstadoCancelado, 0, err
 	}
 
 	if !cuentaDestino.Activa {
-		return entidad.EstadoCancelado, 0, errors.New("La cuenta de destino no está activada.")
-
+		return entidad.EstadoCancelado, 0, fmt.Errorf("%w: %s", entidad.ErrCuentaInactiva, destino.Numero)
 	}
 
 	if cuentaDestino.Numero == cuentaOrigen.Numero {
-		return entidad.EstadoCancelado, 0, errors.New("La cuenta de destino no puede ser su misma cuenta")
-
+		return entidad.EstadoCancelado, 0, fmt.Errorf("%w: no puede transferir a la misma cuenta", entidad.ErrCuentaDestinoInvalida)
 	}
+
 	cuentaOrigen.Saldo -= monto
 	cuentaDestino.Saldo += monto
 
 	redCentral.Cuentas[cuentaOrigen.Numero] = cuentaOrigen
-
 	redCentral.Cuentas[cuentaDestino.Numero] = cuentaDestino
 
 	id := len(redCentral.Transacciones) + 1
